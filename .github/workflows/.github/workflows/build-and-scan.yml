@@ -8,6 +8,7 @@ on:
     branches:
       - master
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,3 +26,20 @@ jobs:
 
     - name: Generate SBOM with Syft
       run: syft juice-shop -o table
+
+        semgrep:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install Semgrep
+      run: |
+        curl -sL https://semgrep.dev/install.sh | bash
+
+    - name: Run Semgrep
+      run: |
+        ./semgrep --config auto --error
+        added semgrep scan job
+
