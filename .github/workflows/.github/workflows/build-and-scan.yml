@@ -8,38 +8,23 @@ on:
     branches:
       - master
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build Docker Image
+        run: docker build -t juice-shop .
+      - name: Install Syft
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
 
-    - name: Build Docker Image
-      run: docker build -t juice-shop .
-
-    - name: Install Syft
-      run: |
-        curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
-
-    - name: Generate SBOM with Syft
-      run: syft juice-shop -o table
-
-        semgrep:
+  new-job:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Install Semgrep
-      run: |
-        curl -sL https://semgrep.dev/install.sh | bash
-
-    - name: Run Semgrep
-      run: |
-        ./semgrep --config auto --error
-        added semgrep scan job
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Say Hello
+        run: echo "Hello from the new job!"
 
